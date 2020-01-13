@@ -4,10 +4,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Recipe implements Serializable {
@@ -21,6 +23,7 @@ public class Recipe implements Serializable {
     private String description;
     private String prep_time;
     private List<String> preparation_steps = new ArrayList();
+    @OneToMany (cascade = CascadeType.PERSIST)
     private List<Ingredient> ingredients = new ArrayList();
 
     public Recipe() {

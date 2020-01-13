@@ -6,7 +6,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+@NamedQueries({
+    @NamedQuery(name = "Ingredient.deleteAllRows", query = "DELETE FROM Ingredient")})
 @Entity
 public class Ingredient implements Serializable {
 
