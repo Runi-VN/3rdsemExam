@@ -8,14 +8,13 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import entities.Ingredient;
 import entities.Recipe;
-import errorhandling.APIRequestException;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import javax.ws.rs.WebApplicationException;
 
 /**
  *
@@ -53,7 +52,7 @@ public class RecipeFacade {
      * @return
      * @throws APIRequestException
      */
-    public List<String> getAllRecipes() throws APIRequestException {
+    public List<String> getAllRecipes() {
         List<String> recipeList = new ArrayList();
         String allRecipeData = getAPIData(allRecipesURLEXTENSION);
         JsonArray recipeStringArray = GSON.fromJson(allRecipeData, JsonArray.class);
@@ -69,7 +68,7 @@ public class RecipeFacade {
      * @param searchTerm recipe ID, which is a long string with spaces and all
      * @return
      */
-    public Recipe getSingleRecipe(String searchTerm) throws APIRequestException {
+    public Recipe getSingleRecipe(String searchTerm) {
         String recipeData = getAPIData(singleRecipeURLEXTENSION + searchTerm);
         JsonObject obj = GSON.fromJson(recipeData, JsonObject.class);
         //return GSON.fromJson(recipeData, Recipe.class); //easy solution, but I dont want my ID to be a string with spaces in it, so I have to manually do it.
@@ -87,7 +86,7 @@ public class RecipeFacade {
         return result;
     }
 
-    private String getAPIData(String urlExtension) throws APIRequestException {
+    private String getAPIData(String urlExtension) {
         if (urlExtension.contains(" ")) {
             urlExtension = urlExtension.replaceAll(" ", "%20"); //replace spaces with %20 which works with the provided endpoint (as connection/urlBuilder does NOT work with spaces)
         }
@@ -112,7 +111,7 @@ public class RecipeFacade {
                 return response;
             }
         } catch (JsonSyntaxException | IOException e) {
-            throw new APIRequestException("Could not retrieve requested object from resource: " + URL + urlExtension + ". ERROR: " + e);
-        }
+            throw new WebApplicationException("Could not retrieve requested object from resource: " + URL + urlExtension + ". ERROR: " + e, 404);
+        } 
     }
 }

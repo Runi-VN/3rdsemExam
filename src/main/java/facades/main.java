@@ -1,6 +1,5 @@
  package facades;
 
-import errorhandling.APIRequestException;
 import java.util.List;
 
 /**
@@ -9,7 +8,7 @@ import java.util.List;
  */
 public class main {
     
-    public static void main(String[] args) throws APIRequestException {
+    public static void main(String[] args)  {
         RecipeFacade facade = RecipeFacade.getRecipeFacade();
         List<String> allRecipes = facade.getAllRecipes();
         for (String allRecipe : allRecipes) {

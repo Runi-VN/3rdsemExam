@@ -3,7 +3,6 @@ package rest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import entities.Recipe;
-import errorhandling.APIRequestException;
 import facades.RecipeFacade;
 import java.util.List;
 import javax.ws.rs.GET;
@@ -27,14 +26,14 @@ public class RecipeResource {
     @GET
     @Path("all")
     @Produces({MediaType.APPLICATION_JSON})
-    public List<String> getAllRecipes() throws APIRequestException {
+    public List<String> getAllRecipes() {
         return FACADE.getAllRecipes();
     }
 
     @GET
     @Path("specific/{recipe}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Recipe getSingleRecipe(@PathParam("recipe") String recipe) throws APIRequestException {
+    public Recipe getSingleRecipe(@PathParam("recipe") String recipe) {
         return FACADE.getSingleRecipe(recipe);
     }
 

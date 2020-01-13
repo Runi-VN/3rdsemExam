@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package rest;
 
 import entities.Ingredient;
@@ -85,14 +80,8 @@ public class RecipeResourceTest {
 
     @AfterAll
     public static void tearDownClass() {
-    }
-
-    @BeforeEach
-    public void setUp() {
-    }
-
-    @AfterEach
-    public void tearDown() {
+        EMF_Creator.endREST_TestWithDB();
+        httpServer.shutdownNow();
     }
 
     @Test
