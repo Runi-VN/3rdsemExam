@@ -20,10 +20,6 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeoutException;
 import javafx.util.Pair;
 
-/**
- *
- * @author Camilla
- */
 public class ApiFacade {
     private ExecutorService executor = Executors.newCachedThreadPool();
     private String url = "https://swapi.co/api/";

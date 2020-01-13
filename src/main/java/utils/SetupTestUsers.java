@@ -38,7 +38,7 @@ public class SetupTestUsers {
         em.persist(admin);
         em.persist(both);
         em.getTransaction().commit();
-        System.out.println("PW HASH CHECK: " + user.getUserPass());
+        System.out.println("PW HASH CHECK: " + user.getUserPassword());
         System.out.println("Created TEST Users");
     }
 

@@ -16,9 +16,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
 import utils.EMF_Creator;
 
-/**
- * @author lam@cphbusiness.dk
- */
 @Path("info")
 public class SWAPIRessource {
 

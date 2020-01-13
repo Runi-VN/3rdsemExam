@@ -34,7 +34,7 @@ public class User implements Serializable {
     @NotNull
     @Size(min = 1, max = 255)
     @Column(name = "user_pass")
-    private String userPass;
+    private String userPassword;
     @JoinTable(name = "user_roles", joinColumns = {
         @JoinColumn(name = "user_name", referencedColumnName = "user_name")}, inverseJoinColumns = {
         @JoinColumn(name = "role_name", referencedColumnName = "role_name")})
@@ -56,17 +56,17 @@ public class User implements Serializable {
     }
 
     public boolean verifyPasswordNonHashed(String pw) {
-        return (BCrypt.checkpw(pw, userPass));
+        return (BCrypt.checkpw(pw, userPassword));
     }
 
     public boolean verifyHashedPW(String pw) {
-        return (pw.equals(this.userPass));
+        return (pw.equals(this.userPassword));
     }
 
     public User(String userName, String userPass) {
         this.userName = userName;
 
-        this.userPass = BCrypt.hashpw(userPass, BCrypt.gensalt());
+        this.userPassword = BCrypt.hashpw(userPass, BCrypt.gensalt());
     }
 
     public String getUserName() {
@@ -77,12 +77,12 @@ public class User implements Serializable {
         this.userName = userName;
     }
 
-    public String getUserPass() {
-        return this.userPass;
+    public String getUserPassword() {
+        return this.userPassword;
     }
 
-    public void setUserPass(String userPass) {
-        this.userPass = BCrypt.hashpw(userPass, BCrypt.gensalt());
+    public void setUserPassword(String userPassword) {
+        this.userPassword = BCrypt.hashpw(userPassword, BCrypt.gensalt());
     }
 
     public List<Role> getRoleList() {
@@ -101,7 +101,7 @@ public class User implements Serializable {
     public int hashCode() {
         int hash = 3;
         hash = 37 * hash + Objects.hashCode(this.userName);
-        hash = 37 * hash + Objects.hashCode(this.userPass);
+        hash = 37 * hash + Objects.hashCode(this.userPassword);
         hash = 37 * hash + Objects.hashCode(this.roleList);
         return hash;
     }
@@ -121,7 +121,7 @@ public class User implements Serializable {
         if (!Objects.equals(this.userName, other.userName)) {
             return false;
         }
-        if (!Objects.equals(this.userPass, other.userPass)) {
+        if (!Objects.equals(this.userPassword, other.userPassword)) {
             return false;
         }
         if (!Objects.equals(this.roleList, other.roleList)) {
@@ -132,7 +132,7 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "User{" + "userName=" + userName + ", userPass=" + userPass + ", roleList=" + roleList + '}';
+        return "User{" + "userName=" + userName + ", userPassword=" + userPassword + ", roleList=" + roleList + '}';
     }
 
 }

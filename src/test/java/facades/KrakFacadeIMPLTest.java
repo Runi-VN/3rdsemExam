@@ -20,10 +20,6 @@ import utils.EMF_Creator;
 import utils.EMF_Creator.DbSelector;
 import utils.EMF_Creator.Strategy;
 
-/**
- *
- * @author runin
- */
 public class KrakFacadeIMPLTest {
 
     private static EntityManagerFactory emf;

@@ -84,9 +84,9 @@ public class UserFacadeTest {
         em.persist(both);
         em.getTransaction().commit();
 
-        System.out.println("USER HASH CHECK: " + user.getUserPass());
-        System.out.println("ADMIN HASH CHECK: " + admin.getUserPass());
-        System.out.println("BOTH HASH CHECK: " + both.getUserPass());
+        System.out.println("USER HASH CHECK: " + user.getUserPassword());
+        System.out.println("ADMIN HASH CHECK: " + admin.getUserPassword());
+        System.out.println("BOTH HASH CHECK: " + both.getUserPassword());
         System.out.println("Created TEST Users");
     }
 
