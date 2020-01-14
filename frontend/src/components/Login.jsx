@@ -30,6 +30,10 @@ export const LogIn = ({login, message}) => {
 				<br></br>
 				<p>{message}</p>
 			</form>
+			<p>user | test</p>
+			<p>admin | test</p>
+			<p>user_admin | test</p>
+			<p>nobody | test</p>
 		</div>
 	);
 };
