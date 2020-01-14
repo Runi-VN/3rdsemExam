@@ -1,7 +1,6 @@
 package rest;
 
 import entities.User;
-import facades.ApiFacade;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.security.RolesAllowed;
@@ -17,9 +16,8 @@ import javax.ws.rs.core.SecurityContext;
 import utils.EMF_Creator;
 
 @Path("info")
-public class SWAPIRessource {
+public class LoginResource {
 
-    private ApiFacade facade = new ApiFacade();
     private static EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory(EMF_Creator.DbSelector.DEV, EMF_Creator.Strategy.CREATE);
 
     @Context
@@ -34,13 +32,6 @@ public class SWAPIRessource {
         return "{\"msg\":\"Hello anonymous, we are UP & you are not logged in\"}";
     }
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("five")
-    @RolesAllowed({"admin", "user"})
-    public Map getDataFrom5Endpoints() throws Exception {
-        return facade.allApiData();
-    }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
