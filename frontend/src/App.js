@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import facade from './apiFacade';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {LogIn, LoggedIn} from './components/Login.jsx';
@@ -10,10 +10,7 @@ import {
 	Switch,
 	Route,
 	NavLink,
-	useParams,
-	useRouteMatch,
-	Link,
-	Prompt
+	Link
 } from 'react-router-dom';
 import ShowRoles from './components/ShowRoles.jsx';
 

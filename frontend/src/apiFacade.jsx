@@ -1,5 +1,5 @@
 //TODO Change this before deployment (production)
-import {localURL as URL} from './settings.js';
+import {onlineURL as URL} from './settings.js';
 function handleHttpErrors(res) {
 	if (!res.ok) {
 		return Promise.reject({status: res.status, fullError: res.json()});
@@ -37,14 +37,6 @@ const ApiFacade = () => {
 		const loggedIn = getToken() != null;
 		return loggedIn;
 	}
-
-	// const fetchSwapi = () => {
-	//   //Remember to always include options from the makeOptions fucntion with >true< as the second parameter
-	//   //if you want to access a protected endpoint
-	//   const options = makeOptions("GET", true); //True add's the token
-	//   return fetch(URL + "/api/info/five", options).then(handleHttpErrors);
-	// };
-
 	const fetchGetData = (endpoint, value) => {
 		const options = makeOptions('GET', true); //True adds the token
 		let urlToSearch;

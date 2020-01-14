@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import {Link} from 'react-router-dom';
 import facade from '../apiFacade';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Collapse from 'react-bootstrap/Collapse';
@@ -11,75 +10,16 @@ const Welcome = () => {
 	const [searchRecipe, setSearchRecipe] = useState();
 	const [recipeDetails, setRecipeDetails] = useState();
 	const [errorMessage, setErrorMessage] = useState();
-	const [showMenu, setShowMenu] = useState(false);
-	const [menu, setMenu] = useState([
-		{
-			weekDay: 'THU',
-			recipe: {
-				description:
-					'Chicken wrapped in greaseproof paper to trap all the wonderful juices - keeps beautifully moist! ',
-				id: 0,
-				ingredients: [
-					{
-						description: '1 whole (1.8kg) chicken',
-						id: 0
-					},
-					{
-						description: 'salt and freshly ground black pepper',
-						id: 0
-					},
-					{
-						description: '1 large lemon, sliced',
-						id: 0
-					},
-					{
-						description: '6 cloves garlic, sliced',
-						id: 0
-					},
-					{
-						description: '6 sprigs fresh thyme',
-						id: 0
-					}
-				],
-				name: 'Moist garlic roasted chicken ',
-				prep_time: 'Prep: 10 min ',
-				preparation_steps: [
-					'Preheat oven to 160 degrees C / gas mark 3.',
-					'Place a large sheet of greaseproof or baking parchment into the middle of a roasting tray. It should be large enough to wrap around the chicken plus plenty of extra for folding over.',
-					'Season the chicken with salt and pepper, stuff with half of the lemon slices and place breast side up in the middle of the paper. Sprinkle garlic slices and thyme sprigs evenly over the chicken. Lay the remaining lemon slices over the breast. Fold the paper over the chicken forming a loose parcel.',
-					'Bake in the preheated oven until the chicken has cooked, about 1 1/2 to 2 hours or until the juices are no longer pink.',
-					'Perfect Prawn Pitta Wrap ',
-					'hese perfect prawn pittas are delicious with the perfect tangy sauce (very similar to marie rose), watercress and avocado! I love prawn sandwiches but this is a great twist on the ordinary sandwich. ',
-					'Ingredients ',
-					'Serves: 1 ',
-					'1 pitta bread',
-					'2 tablespoons mayonnaise',
-					'1 teaspoon ketchup',
-					'drop of horseradish sauce',
-					'sprinkle of cayenne pepper',
-					'splash of lemon juice',
-					'1 small avacado',
-					'60g (2 oz) cooked, peeled prawns',
-					'small handful of watercress',
-					'Place pitta bread in toaster and leave until it puffs out. Cut off end of pitta bread and stick a knife inside to open up the pocket.',
-					'In a bowl place the mayonnaise, ketchup, horseradish, cayenne pepper and a splash of lemon juice. Combine.',
-					'Chop up avacado and add to sauce along with prawns.',
-					'Rip up some watercress and add to the bowl.',
-					'Combine and spoon the mixture into the the pitta bread!'
-				]
-			}
-		}
-	]);
-	console.log(showMenu);
-	console.log(searchRecipe);
-	console.log(recipeDetails);
+	const [shoppingList, setShoppingList] = useState([]);
+
+	const [menu, setMenu] = useState([]);
+
 	//For loading all recipes
 	useEffect(() => {
 		WeeklyDropdown();
 		facade
 			.fetchGetData('all')
 			.then(res => {
-				console.log(res);
 				setRecipes(res);
 				setErrorMessage('');
 			})
@@ -100,7 +40,6 @@ const Welcome = () => {
 			facade
 				.fetchGetData('specific/' + searchRecipe)
 				.then(res => {
-					console.log(res);
 					setRecipeDetails(res);
 					setErrorMessage('');
 				})
@@ -116,6 +55,21 @@ const Welcome = () => {
 				});
 		}
 	}, [searchRecipe]);
+
+	//For shopping list
+	useEffect(() => {
+		if (menu.length != 0) {
+			let newShoppingList = [];
+			{
+				menu.map(element => {
+					element.recipe.ingredients.map(element => {
+						newShoppingList.push(element.description);
+					});
+				});
+			}
+			setShoppingList(shoppingList => [...shoppingList, ...newShoppingList]);
+		}
+	}, [menu]);
 
 	return (
 		<div>
@@ -133,11 +87,16 @@ const Welcome = () => {
 				<div className="col-sm-6">
 					<h4>Your menu plan</h4>
 					<MenuPlanner
-						showMenu={showMenu}
-						setShowMenu={setShowMenu}
 						menu={menu}
 						setMenu={setMenu}
+						shoppingList={shoppingList}
 					/>
+					{menu.length != 0 && <h4>Your shopping list</h4>}
+					<ul>
+						{shoppingList.map(element => {
+							return <li>{element}</li>;
+						})}
+					</ul>
 				</div>
 			</div>
 		</div>
@@ -150,16 +109,9 @@ function DisplayRecipeDetails({recipe, menu, setMenu}) {
 	function handleClick() {
 		let dayPlan = {
 			recipe,
-			// recipe: {
-			// 	name: recipe.name,
-			// 	description: recipe.description,
-			// 	prep_time: recipe.prep_time,
-			// 	preparation_steps
-			// },
 			weekDay: document.getElementById('weeklyDropDown').value
 		};
 		setMenu(menu => [...menu, dayPlan]);
-		console.log('menu: ', menu);
 	}
 
 	if (recipe)
@@ -247,14 +199,8 @@ function AllRecipes({recipes, setRecipeDetailed}) {
 	return null;
 }
 
-function MenuPlanner({menu, setMenu}) {
-	console.log('menu in planner: ', menu);
-	if (menu.length != 0) {
-		console.log('menu0Rec', menu[0].weekDay);
-	}
-
-	if (!menu) {
-		//TODO ADD: || menu.length == 0
+function MenuPlanner({menu}) {
+	if (!menu || menu.length == 0) {
 		return (
 			<p className="italicCustomStyle">
 				(Add recipes to your menu by accessing the recipes)
@@ -262,84 +208,36 @@ function MenuPlanner({menu, setMenu}) {
 		);
 	} else {
 		return (
-			<table className="table table-sm">
-				<thead>
-					<tr>
-						<th>Data</th>
-						<th>Monday</th>
-						<th>Tuesday</th>
-						<th>Wednesday</th>
-						<th>Thursday</th>
-						<th>Friday</th>
-						<th>Saturday</th>
-						<th>Sunday</th>
-					</tr>
-				</thead>
-				<tbody>
-					<GenerateRows menu={menu} />
-				</tbody>
-			</table>
+			<div>
+				<table className="table table-sm">
+					<thead>
+						<tr>
+							<th>Weekday</th>
+							<th>Name</th>
+						</tr>
+					</thead>
+					<tbody>
+						<GenerateTableRows menu={menu} />
+					</tbody>
+				</table>
+			</div>
 		);
 	}
 }
 
-function GenerateRows(menu) {
-	//bad performance
-
-	return null;
+function GenerateTableRows({menu}) {
+	return (
+		<>
+			{menu.map((element, index) => {
+				return (
+					<tr>
+						<td key={index + element.weekDay}>{element.weekDay}</td>
+						<td key={index + element.recipe.name}>{element.recipe.name}</td>
+					</tr>
+				);
+			})}
+		</>
+	);
 }
-
-// function MemberTable({members}) {
-// 	console.log('members: ', members);
-// 	const tableItems = members.map((member, index) => (
-// 		<Row
-// 			key={member.id}
-// 			fName={member.fName}
-// 			id={member.id}
-// 			hobbylist={member.hobbylist}
-// 			lName={member.lName}
-// 			mail={member.mail}
-// 			residence={member.residence}
-// 			telephone={member.telephone}
-// 		/>
-// 	));
-// 	return (
-// 		<table className="table">
-// 			<thead>
-// 				<tr>
-// 					<th>First Name</th>
-// 					<th>Hobbies</th>
-// 					<th>ID</th>
-// 					<th>Last Name</th>
-// 					<th>Email</th>
-// 					<th>Address</th>
-// 					<th>City</th>
-// 					<th>Phone</th>
-// 				</tr>
-// 			</thead>
-// 			<tbody>{tableItems}</tbody>
-// 		</table>
-// 	);
-// }
-
-// function Row(props) {
-// 	console.log(props.hobbylist);
-// 	return (
-// 		<tr>
-// 			<td>{props.fName}</td>
-// 			<td>
-// 				{props.hobbylist.map((element, index) => {
-// 					return <li key={index}>{element.hobbyName}</li>;
-// 				})}
-// 			</td>
-// 			<td>{props.id}</td>
-// 			<td>{props.lName}</td>
-// 			<td>{props.mail}</td>
-// 			<td>{props.residence.road}</td>
-// 			<td>{props.residence.town}</td>
-// 			<td>{props.telephone}</td>
-// 		</tr>
-// 	);
-// }
 
 export default Welcome;

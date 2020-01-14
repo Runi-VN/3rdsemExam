@@ -27,3 +27,11 @@
 	padding-right: 5px;
 	display: inline-block;
 }
+
+h1,
+h2,
+h3,
+h4,
+h6 {
+	text-decoration: underline;
+}
