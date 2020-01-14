@@ -1,14 +1,29 @@
 .customBorder {
 	display: inline-block;
-	padding-top: 5px;
+	padding: 5px 5px 5px 5px;
+	/* padding-top: 5px;
 	padding-bottom: 5px;
-	padding-right: 5px;
+	padding-right: 5px; */
 }
 
 .customBorder p {
 	font-style: italic;
 }
 
-.recipeSteps {
+.italicCustomStyle {
 	font-style: italic;
+}
+
+.errorMsg {
+	color: red;
+	font-style: italic;
+}
+
+.weeklyBtn {
+	display: inline-block;
+}
+
+.weeklyDropdwn {
+	padding-right: 5px;
+	display: inline-block;
 }
